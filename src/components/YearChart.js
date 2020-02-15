@@ -1,5 +1,8 @@
 import React from 'react';
 import { useState, useEffect } from 'react';
+import CalendarHeatmap from 'react-calendar-heatmap';
+import { Chart } from "react-google-charts";
+import 'react-calendar-heatmap/dist/styles.css';
 
 function YearChart() {
   const [items, setItems] = useState([]);
@@ -12,7 +15,22 @@ function YearChart() {
   return (
     <div>
       <div>
-        {items.map((home, index) => <p key={index}>{home.date} {home.count} {home.sum}</p>)}
+        <CalendarHeatmap
+          startDate={new Date('2019-01-01')}
+          endDate={new Date('2019-12-31')}
+          gutterSize={0}
+          values={items.map((item) => {
+            return {
+              'date': item.date,
+              'count': item.count
+            }})}
+          classForValue={(value) => {
+            if (!value) {
+              return 'color-empty';
+            }
+            return `color-scale-${value.count}`;
+          }}
+        />
       </div>
     </div>
   );
